@@ -13,6 +13,7 @@ namespace SpriteKind {
     export const Collectable = SpriteKind.create()
     export const PowerUp = SpriteKind.create()
     export const Key = SpriteKind.create()
+    export const Snake = SpriteKind.create()
 }
 namespace StatusBarKind {
     export const Keys = StatusBarKind.create()
@@ -139,76 +140,57 @@ function man_stand_animation () {
     animation.attachAnimation(Man, man_stand_left)
     animation.attachAnimation(Man, man_stand_right)
 }
-scene.onHitTile(SpriteKind.Player, 11, function (sprite) {
-    scene.setTile(11, img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . c c c c c 
-        . . . . . . . . . c c 7 7 7 6 c 
-        . . . . . . . . c c 7 7 7 c c . 
-        . . . . . . . . c 6 7 7 c . . . 
-        . . . . . . . . c 6 6 6 c . . . 
-        . . . c c c c c c 6 6 6 c c . . 
-        . . c 6 7 7 7 7 6 c c 6 6 6 c . 
-        . c 7 7 7 7 7 7 7 7 c 6 6 6 c c 
-        c 6 7 7 7 7 7 7 7 7 6 c 6 6 6 c 
-        c 7 c 6 6 6 6 c 7 7 7 c 6 6 6 c 
-        f 7 c c 6 6 c c 7 7 7 f 6 6 6 c 
-        f 7 6 f 6 6 f 6 7 7 7 f 6 6 6 c 
-        . c 1 c f f 1 c 7 6 f 6 6 c c . 
-        . c c c c c c c c c c c c . . . 
-        `, false)
-    pause(500)
-    scene.setTile(11, img`
-        . . . . . c c c c c c c . . . . 
-        . . . . c 6 7 7 7 7 7 6 c . . . 
-        . . . c 7 c 6 6 6 6 c 7 6 c . . 
-        . . c 6 7 6 f 6 6 f 6 7 7 c . . 
-        . . c 7 7 7 7 7 7 7 7 7 7 c . . 
-        . . f 7 8 1 f f 1 6 7 7 7 f . . 
-        . . f 6 f 1 f f 1 f 7 7 7 f . . 
-        . . . f f 2 2 2 2 f 7 7 6 f . . 
-        . . c c f 2 2 2 2 7 7 6 f c . . 
-        . c 7 7 7 7 7 7 7 7 c c 7 7 c . 
-        c 7 1 1 1 7 7 7 7 f c 6 7 7 7 c 
-        f 1 1 1 1 1 7 6 f c c 6 6 6 c c 
-        f 1 1 1 1 1 1 6 6 c 6 6 6 c . . 
-        f 6 1 1 1 1 1 6 6 6 6 6 6 c . . 
-        . f 6 1 1 1 1 1 6 6 6 6 c . . . 
-        . . f f c c c c c c c c . . . . 
-        `, false)
-    info.changeLifeBy(-1)
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    game.splash("Go back a level")
+    level = level - 1
+    startLevel()
+    createMan()
 })
-function create_snake () {
-    tile_list = scene.getTilesByType(11)
-    for (let value22 of tile_list) {
-        snake = sprites.create(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . 5 . . . . . . . . . 
-            . . . . . . 5 5 5 . . . . . . . 
-            . . . . . . 5 . . . . . . . . . 
-            . . . . . . 5 5 5 . . . . . . . 
-            . . . . . . 5 . . . . . . . . . 
-            . . . . . . 5 . . . . . . . . . 
-            . . . . . . 5 . . . . . . . . . 
-            . . . . 5 5 5 5 5 . . . . . . . 
-            . . . . 5 . . . 5 . . . . . . . 
-            . . . . 5 . 5 . 5 . . . . . . . 
-            . . . . 5 . . . 5 . . . . . . . 
-            . . . . 5 5 5 5 5 . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, SpriteKind.Key)
-        scene.place(value22, snake)
-        animation.runMovementAnimation(
-        snake,
-        animation.animationPresets(animation.bobbing),
-        2000,
-        true
-        )
+scene.onHitTile(SpriteKind.Player, 11, function (sprite) {
+    if (keysTrue == 3 && level == 4) {
+        game.showLongText("You have the keys. You may enter.", DialogLayout.Top)
+        scene.setTile(11, img`
+            c b b b b b b b b b b b b b b c 
+            c b b b b b b b b b b b b b b c 
+            c d d d d d d d d d d d d d d c 
+            c d d d d d d d d d d d d d d c 
+            c c c c c c c c c c c c c c c c 
+            c b b c b b b b b b b b c b b c 
+            c d d c b b b b b b b b c d d c 
+            c d d c 4 b b 5 5 b b 4 c d d c 
+            c d d c b e 5 b b 5 e b c d d c 
+            c d d c b e 4 5 5 4 e b c d d c 
+            c b b c 4 b 5 4 f 5 b 4 c b b c 
+            c d d c b b 4 4 e 4 b b c d d c 
+            c d d c b b e 4 4 e b b c d d c 
+            c d d c b b b e e b b b c d d c 
+            c d d c b b b b b b b b c d d c 
+            a c c c c c c c c c c c c c c a 
+            `, false)
+    } else {
+        game.showLongText("You have do not have the keys! You may not enter!", DialogLayout.Top)
+        scene.setTile(11, img`
+            c b b b b b b b b b b b b b b c 
+            c b b b b b b b b b b b b b b c 
+            c d d d d d d d d d d d d d d c 
+            c d d d d d d d d d d d d d d c 
+            c c c c c c c c c c c c c c c c 
+            c b b c b b b b b b b b c b b c 
+            c d d c b b b b b b b b c d d c 
+            c d d c 4 b b 5 5 b b 4 c d d c 
+            c d d c b e 5 b b 5 e b c d d c 
+            c d d c b e 4 5 5 4 e b c d d c 
+            c b b c 4 b 5 4 f 5 b 4 c b b c 
+            c d d c b b 4 4 e 4 b b c d d c 
+            c d d c b b e 4 4 e b b c d d c 
+            c d d c b b b e e b b b c d d c 
+            c d d c b b b b b b b b c d d c 
+            a c c c c c c c c c c c c c c a 
+            `, true)
+        info.setLife(0)
+        game.over(false)
     }
-}
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (Man.isHittingTile(CollisionDirection.Bottom) || level == 4) {
         Man.vy = -140
@@ -609,60 +591,6 @@ function createEnemy () {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             `, SpriteKind.Enemy)
-        enemy3 = sprites.create(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, SpriteKind.Enemy)
-        enemy4 = sprites.create(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, SpriteKind.Enemy)
-        enemy5 = sprites.create(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            `, SpriteKind.Enemy)
     }
 }
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -678,86 +606,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Collectable, function (sprite, o
     otherSprite.destroy()
     music.powerUp.play()
 })
-function snakeBite () {
-    man_stand_right = animation.createAnimation(ActionKind.standing_right, 200)
-    man_stand_right.addAnimationFrame(img`
-        . . . f f f f f . . . . . 
-        . f f f f f f f f f . . . 
-        . f f f f f f c f f f . . 
-        f f f f c f f f c f f . . 
-        f c f f c c f f f c c f f 
-        f c c f f f f e f f f f f 
-        f f f f f f f e e f f f . 
-        f f e e f b f e e f f . . 
-        . f e 4 e 1 f 4 4 f . . . 
-        . f f f e 4 4 4 4 f . . . 
-        . . f e e e e e f f . . . 
-        . . e 4 4 e 7 7 7 f . . . 
-        . . e 4 4 e 7 7 7 f . . . 
-        . . f e e f 6 6 6 f . . . 
-        . . . f f f f f f . . . . 
-        . . . . f f f . . . . . . 
-        `)
-    man_stand_right.addAnimationFrame(img`
-        . . . . . . . . . . . . . 
-        . . . f f f f f f . . . . 
-        . f f f f f f f f f . . . 
-        . f f f f f f c f f f . . 
-        f f f f c f f f c f f f . 
-        f c f f c c f f f c c f f 
-        f c c f f f f e f f f f f 
-        f f f f f f f e e f f f . 
-        f f e e f b f e e f f f . 
-        f f e 4 e 1 f 4 4 f f . . 
-        . f f f e 4 4 4 4 f . . . 
-        . 4 4 4 e e e e f f . . . 
-        . e 4 4 e 7 7 7 7 f . . . 
-        . f e e f 6 6 6 6 f f . . 
-        . f f f f f f f f f f . . 
-        . . f f . . . f f f . . . 
-        `)
-    man_stand_left = animation.createAnimation(ActionKind.standing_left, 200)
-    man_stand_left.addAnimationFrame(img`
-        . . . . . f f f f f . . . 
-        . . . f f f f f f f f f . 
-        . . f f f c f f f f f f . 
-        . . f f c f f f c f f f f 
-        f f c c f f f c c f f c f 
-        f f f f f e f f f f c c f 
-        . f f f e e f f f f f f f 
-        . . f f e e f b f e e f f 
-        . . . f 4 4 f 1 e 4 e f . 
-        . . . f 4 4 4 4 e f f f . 
-        . . . f f e e e e e f . . 
-        . . . f 7 7 7 e 4 4 e . . 
-        . . . f 7 7 7 e 4 4 e . . 
-        . . . f 6 6 6 f e e f . . 
-        . . . . f f f f f f . . . 
-        . . . . . . f f f . . . . 
-        `)
-    man_stand_left.addAnimationFrame(img`
-        . . . . . . . . . . . . . 
-        . . . . f f f f f f . . . 
-        . . . f f f f f f f f f . 
-        . . f f f c f f f f f f . 
-        . f f f c f f f c f f f f 
-        f f c c f f f c c f f c f 
-        f f f f f e f f f f c c f 
-        . f f f e e f f f f f f f 
-        . f f f e e f b f e e f f 
-        . . f f 4 4 f 1 e 4 e f f 
-        . . . f 4 4 4 4 e f f f . 
-        . . . f f e e e e 4 4 4 . 
-        . . . f 7 7 7 7 e 4 4 e . 
-        . . f f 6 6 6 6 f e e f . 
-        . . f f f f f f f f f f . 
-        . . . f f f . . . f f . . 
-        `)
-    animation.attachAnimation(Man, man_stand_left)
-    animation.attachAnimation(Man, man_stand_right)
-}
 scene.onHitTile(SpriteKind.Player, 4, function (sprite) {
-    // remember to chasnge
     if (info.score() >= 10 && level == 4) {
         game.showLongText("You may enter!", DialogLayout.Top)
         scene.setTile(4, img`
@@ -891,6 +740,27 @@ sprites.onDestroyed(SpriteKind.Projectile, function (sprite) {
     projectile2.setKind(SpriteKind.Projectile)
     projectile2.y = randint(0, 7) * 16
     projectile2.setFlag(SpriteFlag.AutoDestroy, true)
+})
+scene.onHitTile(SpriteKind.Player, 12, function (sprite) {
+    game.showLongText("You have done it!!!", DialogLayout.Top)
+    scene.setTile(12, img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, false)
 })
 function create_map () {
     scene.setBackgroundColor(0)
@@ -1110,24 +980,60 @@ function create_map () {
         c d d b f c f f c f c f b d d c 
         a c c a f c f f c f c f a c c a 
         `, true)
-    scene.setTile(11, img`
-        . . . . . c c c c c c c . . . . 
-        . . . . c 6 7 7 7 7 7 6 c . . . 
-        . . . c 7 c 6 6 6 6 c 7 6 c . . 
-        . . c 6 7 6 f 6 6 f 6 7 7 c . . 
+    scene.setTile(6, img`
+        . . . . c c c c c c c . . . . . 
+        . . . c 6 7 7 7 7 7 6 c . . . . 
+        . . c 6 7 c 6 6 6 6 c 7 c . . . 
+        . . c 7 7 6 f 6 6 f 6 7 6 c . . 
         . . c 7 7 7 7 7 7 7 7 7 7 c . . 
-        . . f 7 8 1 f f 1 6 7 7 7 f . . 
-        . . f 6 f 1 f f 1 f 7 7 7 f . . 
-        . . . f f 2 2 2 2 f 7 7 6 f . . 
-        . . c c f 2 2 2 2 7 7 6 f c . . 
-        . c 7 7 7 7 7 7 7 7 c c 7 7 c . 
-        c 7 1 1 1 7 7 7 7 f c 6 7 7 7 c 
-        f 1 1 1 1 1 7 6 f c c 6 6 6 c c 
-        f 1 1 1 1 1 1 6 6 c 6 6 6 c . . 
-        f 6 1 1 1 1 1 6 6 6 6 6 6 c . . 
-        . f 6 1 1 1 1 1 6 6 6 6 c . . . 
-        . . f f c c c c c c c c . . . . 
-        `, false)
+        . . f 7 7 7 6 1 f f 1 8 7 f . . 
+        . . f 7 7 7 f 1 f f 1 f 6 f . . 
+        . . f 6 7 7 f 2 2 2 2 f f . . . 
+        . . c f 6 7 7 2 2 2 2 f c c . . 
+        . c 7 7 c c 7 7 7 7 7 7 7 7 c . 
+        c 7 7 7 6 c f 7 7 7 7 1 1 1 7 c 
+        c c 6 6 6 c c f 6 7 1 1 1 1 1 f 
+        . . c 6 6 6 c 6 6 1 1 1 1 1 1 f 
+        . . c 6 6 6 6 6 6 1 1 1 1 1 6 f 
+        . . . c 6 6 6 6 1 1 1 1 1 6 f . 
+        . . . . c c c c c c c c f f . . 
+        `, true)
+    scene.setTile(11, img`
+        c b b b b b b b b b b b b b b c 
+        c b b b b b b b b b b b b b b c 
+        c d d d d d d d d d d d d d d c 
+        c d d d d d d d d d d d d d d c 
+        c c c c c c c c c c c c c c c c 
+        c b b c b b b b b b b b c b b c 
+        c d d c b b b b b b b b c d d c 
+        c d d c 4 b b 5 5 b b 4 c d d c 
+        c d d c b e 5 b b 5 e b c d d c 
+        c d d c b e 4 5 5 4 e b c d d c 
+        c b b c 4 b 5 4 f 5 b 4 c b b c 
+        c d d c b b 4 4 e 4 b b c d d c 
+        c d d c b b e 4 4 e b b c d d c 
+        c d d c b b b e e b b b c d d c 
+        c d d c b b b b b b b b c d d c 
+        a c c c c c c c c c c c c c c a 
+        `, true)
+    scene.setTile(12, img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . 4 4 4 4 . . . . . . 
+        . . . . 4 4 4 5 5 4 4 4 . . . . 
+        . . . . 4 2 2 4 4 4 4 4 4 . . . 
+        . . 4 4 2 2 2 2 2 2 1 1 4 4 . . 
+        . . 4 4 2 2 2 2 2 2 1 1 5 4 . . 
+        . 4 5 2 2 2 2 2 2 2 2 5 5 4 4 . 
+        . 4 5 2 2 2 2 2 4 5 5 4 5 4 4 . 
+        . 4 5 2 2 2 2 5 4 4 5 4 4 4 4 . 
+        . 4 2 2 2 5 5 5 5 4 5 5 4 4 4 . 
+        . . 4 2 2 2 2 4 5 4 4 5 2 4 . . 
+        . . 4 2 2 2 2 2 4 4 4 2 4 4 . . 
+        . . . 4 2 2 2 2 2 2 2 2 4 . . . 
+        . . . . 4 4 2 2 2 2 4 4 . . . . 
+        . . . . . . 4 4 4 4 . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, true)
     if (level == 1) {
         scene.setTileMap(img`
             999.....................................
@@ -1593,29 +1499,29 @@ function create_map () {
             fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff.5...ffffffffffffffffffffffffffffffffff
             ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff.5...5fff.5fffffffffffffffffffffffffffffffff
             fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff..fffffffff.fffffffffffffffffffffffffffffffff
-            fffffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbfffffffffffffffffffbffffffffffffffffffffffffffffffff..5.....fffffffffffffff5ffffffffff.ffffffffffffffffffffff..........9
-            fffffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbffffffffffffffffffffffffffffffff.ffffff...5.......5....5.fffffffff.fffffffff........fffff.ffffffffff
-            fffffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbfffffffffffffffffffffffffffffff..fffffffffffffffffffffff.fffffffff8ffffff....ffffff..ffff.ffffffffff
-            ffffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbfffffffffffffffffffffffffffffff.ffffffffffffffffffffffff..ffffffff.fffff..ffffffffff.ffff..fffffffff
-            ffffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbfffffffffffffffffffffffffffffff5fffffffffffffffffffffffff.ffffffff.fffff.fffffffffff8fffff.fffffffff
-            fffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbfffffffffffffffffffffffffffffff.fffffffffffffff..ffffffff..fffffff5..ff..fffffffffff.fffff.fffffffff
-            fffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbfffffffffffffffffffffffffffffff.fffffffffffffff5.fffffffff.fffffffff..5.ffffffffffff..ffff.fffffffff
-            fffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbfffffffffffffffffffffffffffffff..ffffffffffffff..fffffffff5ffffffffffffffffffffffffff.ffff.fffffffff
-            fffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbffffffffffffffffffffffffffffffff.ffffffffffffff...ffffffff..fffffffffffffffffff..5....ffff.fffffffff
-            fffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbffffffffffffffffffffffffffffffff5ffff..ffffffff.f..ffffffff...fffffffffffffffff.ffffffffff5fffffffff
-            fffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbffffffffffffffffffffffffffffffff.ffff....ffffff.ff.ffffffffff.....5.fffffffffff8ffffffffff.fffffffff
-            fffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbffffffffffffffffffffffffffffffff.ffff.ff..ffff..ff..fffffffffffffff...fffffffff.ffffffffff.fffffffff
-            fffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbffffffffffffffffffffffffffffffff.ffff.fff..fff.ffff.fffffffffffffffff.fffffffff...ffffffff.fffffffff
-            fffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbffffffffffffffffffffffffffffffff5ffff.ffff.ff..ffff.fffffffffffffffff.fffffffffff..fffff...fffffffff
-            fffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbffffffffffffffffffffffffffffffff.ffff.ffff....fffff.fffffffffffffffff.ffffffffffff.......fffffffffff
-            ffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbffffffffffffffffffffffffffffffff.ffff.ffff..5ffffff.fffffffffffffffff..fffffffffffffffffffffffffffff
-            ffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbffffffffffffffffffffffffffffffff.ffff.ffff..fffffff5fffffff...5fffffff.fffffffffffffffffffffffffffff
-            ffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbffffffffffffffffffffffffffffffff.ffff.ffff.ffffffff.fffffff.ff...fffff.fffffffffffffffffffffffffffff
-            ffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbfffffffffffffffffffffffffffffff..ffff.ffff.fffffff..ffffff..ffff..ffff..ffffffffffff.5...fffffffffff
-            ffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbfffffffffffffffffffffffffffffff.fffff.ffff.fffffff.fffffff.ffffff.fffff.ffffffff.....fff..ffffffffff
-            ffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb..ffffffff...ffffffffffffff.fff..5fffff.fff..fffffff.ffffff..fffff..fffff.ffffffff.ffffffff.ffffffffff
-            ffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbffffffff................4.....ffff...f.fffffff.ff..ffffffff.ffffff5ffffff.ffffff5ffffffff.ffffffff.ffffffffff
-            ffffffffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbffffffffffffffffffffffff.fffffffffff.ffffff...fffffff.ff.fffffffff.ffffff.ffffff.ffffff.ffffffff8ffffffff.ffffffffff
+            fffffff666666666666666666666666666666666fffffffffffffffffff6ffffffffffffffffffffffffffffffff..5.....fffffffffffffff5ffffffffff.ffffffffffffffffffffff..........9
+            fffffff66666666666666666666666666666666666666666666666666666ffffffffffffffffffffffffffffffff.ffffff...5.......5....5.fffffffff.fffffffff........fffff.ffffffffff
+            fffffff66666666666666666666666666666666666666666666666666666fffffffffffffffffffffffffffffff..fffffffffffffffffffffff.fffffffff8ffffff....ffffff..ffff.ffffffffff
+            ffffff666666666666666666666666666666666666666666666666666666fffffffffffffffffffffffffffffff.ffffffffffffffffffffffff..ffffffff.fffff..ffffffffff.ffff..fffffffff
+            ffffff666666666666666666666666666666666666666666666666666666fffffffffffffffffffffffffffffff5fffffffffffffffffffffffff.ffffffff.fffff.fffffffffff8fffff.fffffffff
+            fffff6666666666666666666666666666666666666666666666666666666fffffffffffffffffffffffffffffff.fffffffffffffff..ffffffff..fffffff5..ff..fffffffffff.fffff.fffffffff
+            fffff6666666666666666666666666666666666666666666666666666666fffffffffffffffffffffffffffffff.fffffffffffffff5.fffffffff.fffffffff..5.ffffffffffff..ffff.fffffffff
+            fffff6666666666666666666666666666666666666666666666666666666fffffffffffffffffffffffffffffff..ffffffffffffff..fffffffff5ffffffffffffffffffffffffff.ffff.fffffffff
+            fffff6666666666666666666666666666666666666666666666666666666ffffffffffffffffffffffffffffffff.ffffffffffffff...ffffffff..fffffffffffffffffff..5....ffff.fffffffff
+            fffff6666666666666666666666666666666666666666666666666666666ffffffffffffffffffffffffffffffff5ffff..ffffffff.f..ffffffff...fffffffffffffffff.ffffffffff5fffffffff
+            fffff6666666666666666666666666666666666666666666666666666666ffffffffffffffffffffffffffffffff.ffff....ffffff.ff.ffffffffff.....5.fffffffffff8ffffffffff.fffffffff
+            fffff6666666666666666666666666666666666666666666666666666666ffffffffffffffffffffffffffffffff.ffff.ff..ffff..ff..fffffffffffffff...fffffffff.ffffffffff.fffffffff
+            fffff6666666666666666666666666666666666666666666666666666666ffffffffffffffffffffffffffffffff.ffff.fff..fff.ffff.fffffffffffffffff.fffffffff...ffffffff.fffffffff
+            fffff6666666666666666666666666666666666666666666666666666666ffffffffffffffffffffffffffffffff5ffff.ffff.ff..ffff.fffffffffffffffff.fffffffffff..fffff...fffffffff
+            fffff6666666666666666666666666666666666666666666666666666666ffffffffffffffffffffffffffffffff.ffff.ffff....fffff.fffffffffffffffff.ffffffffffff.......fffffffffff
+            ffff66666666666666666666666666666666666666666666666666666666ffffffffffffffffffffffffffffffff.ffff.ffff..5ffffff.fffffffffffffffff..fffffffffffffffffffffffffffff
+            ffff66666666666666666666666666666666666666666666666666666666ffffffffffffffffffffffffffffffff.ffff.ffff..fffffff5fffffff...5fffffff.fffffffffffffffffffffffffffff
+            ffff66666666666666666666666666666666666666666666666666666666ffffffffffffffffffffffffffffffff.ffff.ffff.ffffffff.fffffff.ff...fffff.fffffffffffffffffffffffffffff
+            ffff66666666666666666666666666666666666666666666666666666666fffffffffffffffffffffffffffffff..ffff.ffff.fffffff..ffffff..ffff..ffff..ffffffffffff.5...fffffffffff
+            ffff66666666666666666666666666666666666666666666666666666666fffffffffffffffffffffffffffffff.fffff.ffff.fffffff.fffffff.ffffff.fffff.ffffffff.....fff..ffffffffff
+            ffff666666666666666666666666666666666666666666666666666666..ffffffff...ffffffffffffff.fff..5fffff.fff..fffffff.ffffff..fffff..fffff.ffffffff.ffffffff.ffffffffff
+            ffff66666666666666666666666666666666666666666666666ffffffff................4.....ffff...f.fffffff.ff..ffffffff.ffffff5ffffff.ffffff5ffffffff.ffffffff.ffffffffff
+            ffffffff666666666666666666666666666666666666ffffffffffffffffffffffff.fffffffffff.ffffff...fffffff.ff.fffffffff.ffffff.ffffff.ffffff.ffffffff8ffffffff.ffffffffff
             ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff.fffffffffff.ffffffffffffffff.ff.fffffffff5fffff..ffffff.ffffff.ffffffff.ffffffff..fffffffff
             ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff.fffffffffff.ffffffffffffffff.f5.ffffffff..fffff.fffffff5ffffff.ffffffff.fffffffff...fffffff
             fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff..fffffffffff8ffffffffffffffff.f.fffffffff.ffffff.fffffff...ffff.....5....fffffffffff..ffffff
@@ -1642,27 +1548,27 @@ function create_map () {
             fffffffffff.fffffffffffffffffffffffffffffffffff.fffffffffffffffffffffffffffffffffffffff8fffffffff.ffff..fffffffffff.5..ffffffff........5fff......fffffffffff.fff
             fffffffffff.fffffffffffffffffffffffffffffffffff.fffffffffffffffffffffffffffffffffffffff.fffffffff.ffff.ffffffffffffffffffffffff.fffffff.ffffff.f.....fffffff.fff
             fffffffffff.ffffffffffffffffff.ffffffffffffffff.fffffffffffffffffffffffffffffffffffffff.fffffffff.fff..ffffffffffffffffffffffff.fffffff.ffffff.fffff...5.....fff
-            ffffffffff.....55555...........55555......b....5fffffffffffffffffffffffffffffffffffffff.fffffffff.fff5fffffffffffffffffffffffff5fffffff.ffffff.fffffffffffffffff
+            ffffffffff.....55555...........55555......6....5fffffffffffffffffffffffffffffffffffffff.fffffffff.fff5fffffffffffffffffffffffff5fffffff.ffffff.fffffffffffffffff
             ffffffffffffffffffffffffffffff.ffffffffffffffffffffffffffffffffffffffffffffffffffffffff.fffffffff.ff.ffffffffffffffffffffffffff.fffffff.ffffff..ffffffffffffffff
             ffffffffffffffffffffffffffffff..fffffffffffffffffffffffffffffffffffffffffffffffffffffff.fffffffff5...ffffffffffffffffffffffffff.ffffff..fffffff.ffffffffffffffff
-            ffffffffffffffffffffffffffffff.ffffffffffffffffffffff.f.....................fffffffffff.fffffffffff...fffffffffffffffffffffffff.ffffff.ffffffff.ffffffffffffffff
-            ffffffffffffffffffffffffffffff.ffffffffffffffffffffff.......................fffffffffff.fffffffffffff....ffffffffffffffffffffff.ffffff.ffffffff.ffffffffffffffff
-            ffffffffffffffffffffffffffffff.ffffffffffffffffffffff.......................fffffffffff..fffffffffffffff...5ffffffffffffffffff..ffffff.ffffffff.ffffffffffffffff
-            ffffffffffffffffffffffffffffff.ffffffffffffffffffffff.......................ffffffffffff.ffffffffffffffffff........5...........fffffff.ffffffff.ffffffffffffffff
-            ffffffffffffffffffffffffffffffbffffffffffffffffffffff.......................ffffffffffff.ffffffffffffffffffffffffffffffffffffffffffffffffffffff.ffffffffffffffff
-            fffffffffffffffffffffffffffff..ffffffffffffffffffffff.......................ffffffffffff.fffffffffffffffffffffffffffffffffffffff...ffffffffffff.ffffffffffffffff
-            ffffffffffffffffffffffffffff..fffffffffffffffffffffff.......................ffffffffffff.ffffffffffffff......fffffffffffff.......f5ffffffffffff..fffffffffffffff
-            ffffffffffffffffffffffffffff................b...............................ffffffffffff.fffffffffffffff.fff..........ffff.fffffff.fffffffffffff.fffffffffffffff
-            ffffffffffffffffffffffffffff..f....fffffffffffffffff........................ffffffffffff8fffffffffffffff8ffffffffffff.ffff5fffffff8fffffffffffff5fffffffffffffff
-            ffffffffffffffffffffffffffffffffffffffffffffffffffff...bbbbbbbbbbbbbb......fffffffffffff.fffffffffffffff..fffffffffff.ffff.fffffff.fffffffffffff.fffffffffffffff
-            ffffffffffffffffffffffffffffffffffffffffffffffffffff..bb............bbb....fffffffffffff.ffffffffffffffff......5...ff.ffff.fffffff......5........fffffffffffffff
+            ffffffffffffffffffffffffffffff.ffffffffffffffffffffff6f666666666666666666666fffffffffff.fffffffffff...fffffffffffffffffffffffff.ffffff.ffffffff.ffffffffffffffff
+            ffffffffffffffffffffffffffffff.ffffffffffffffffffffff66666666666666666666666fffffffffff.fffffffffffff....ffffffffffffffffffffff.ffffff.ffffffff.ffffffffffffffff
+            ffffffffffffffffffffffffffffff.ffffffffffffffffffffff66666666666666666666666fffffffffff..fffffffffffffff...5ffffffffffffffffff..ffffff.ffffffff.ffffffffffffffff
+            ffffffffffffffffffffffffffffff.ffffffffffffffffffffff66666666666666666666666ffffffffffff.ffffffffffffffffff........5...........fffffff.ffffffff.ffffffffffffffff
+            ffffffffffffffffffffffffffffff.ffffffffffffffffffffff66666666666666666666666ffffffffffff.ffffffffffffffffffffffffffffffffffffffffffffffffffffff.ffffffffffffffff
+            fffffffffffffffffffffffffffff..ffffffffffffffffffffff.....66...6..66...6.666ffffffffffff.fffffffffffffffffffffffffffffffffffffff...ffffffffffff.ffffffffffffffff
+            ffffffffffffffffffffffffffff..fffffffffffffffffffffff..................6..6.ffffffffffff.ffffffffffffff......fffffffffffff.......f5ffffffffffff..fffffffffffffff
+            ffffffffffffffffffffffffffff................6...................ee.....6....ffffffffffff.fffffffffffffff.fff..........ffff.fffffff.fffffffffffff.fffffffffffffff
+            ffffffffffffffffffffffffffff..f....fffffffffffffffff........eee..7e....6....ffffffffffff8fffffffffffffff8ffffffffffff.ffff5fffffff8fffffffffffff5fffffffffffffff
+            ffffffffffffffffffffffffffffffffffffffffffffffffffff...................6.cafffffffffffff.fffffffffffffff..fffffffffff.ffff.fffffff.fffffffffffff.fffffffffffffff
+            ffffffffffffffffffffffffffffffffffffffffffffffffffffeeeeeeeee..eeeeeeeeeeeefffffffffffff.ffffffffffffffff......5...ff.ffff.fffffff......5........fffffffffffffff
             ffffffffffffffffffffffffffffffffffffffffffffffffffff.......................fffffffffffff5fffffffffffffffffffffffff.........fffffffffffffffffffffffffffffffffffff
-            fffffffffffffffffffffffffffffffffffffffffffffffffff........................fffffffffffff.ffffffffffffffffffffffffffff.ffffffffffffffffffffffffffffffffffffffffff
-            ffffffffffffffffffffffffffffffffffffffffffffffffff.bb......................fffffffffffff........fffffffffffffffffffff.ffffffffffffffffffffffffffffffffffffffffff
-            ffffffffffffffffffffffffffffffffffffffffffffffffffffb.....................bffffffffffffffffffff....5..fffffffffffffff.ffffffffffffffffffffffffffffffffffffffffff
-            fffffffffffffffffffffffffffffffffffffffffffffffffffffbb..................bbffffffffffffffffffffffffff.......5.........ffffffffffffffffffffffffffffffffffffffffff
-            fffffffffffffffffffffffffffffffffffffffffffffffffffff.bb................bbffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-            ffffffffffffffffffffffffffffffffffffffffffffffffffffff.bbbbbbbbbbbbbbbbbb.ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+            fffffffffffffffffffffffffffffffffffffffffffffffffff666666666666666666666666fffffffffffff.ffffffffffffffffffffffffffff.ffffffffffffffffffffffffffffffffffffffffff
+            ffffffffffffffffffffffffffffffffffffffffffffffffff1111111111111111111111111fffffffffffff........fffffffffffffffffffff.ffffffffffffffffffffffffffffffffffffffffff
+            ffffffffffffffffffffffffffffffffffffffffffffffffffff11111111111111111111111ffffffffffffffffffff....5..fffffffffffffff.ffffffffffffffffffffffffffffffffffffffffff
+            fffffffffffffffffffffffffffffffffffffffffffffffffffff2222222222222222222222ffffffffffffffffffffffffff.......5.........ffffffffffffffffffffffffffffffffffffffffff
+            fffffffffffffffffffffffffffffffffffffffffffffffffffff222222222222222222222ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+            ffffffffffffffffffffffffffffffffffffffffffffffffffffff22222222222222222222ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
             ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
             ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
             ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
@@ -1816,6 +1722,35 @@ function create_coin () {
         )
     }
 }
+scene.onHitTile(SpriteKind.Player, 6, function (sprite) {
+    // remember to chasnge
+    if (info.score() >= 55 && level == 4) {
+        music.beamUp.play()
+        game.showLongText("You have forged Immunity! The snakes can't harm you!", DialogLayout.Top)
+        scene.setTile(6, img`
+            . . . . c c c c c c c . . . . . 
+            . . . c 6 7 7 7 7 7 6 c . . . . 
+            . . c 6 7 c 6 6 6 6 c 7 c . . . 
+            . . c 7 7 6 f 6 6 f 6 7 6 c . . 
+            . . c 7 7 7 7 7 7 7 7 7 7 c . . 
+            . . f 7 7 7 6 1 f f 1 8 7 f . . 
+            . . f 7 7 7 f 1 f f 1 f 6 f . . 
+            . . f 6 7 7 f 2 2 2 2 f f . . . 
+            . . c f 6 7 7 2 2 2 2 f c c . . 
+            . c 7 7 c c 7 7 7 7 7 7 7 7 c . 
+            c 7 7 7 6 c f 7 7 7 7 1 1 1 7 c 
+            c c 6 6 6 c c f 6 7 1 1 1 1 1 f 
+            . . c 6 6 6 c 6 6 1 1 1 1 1 1 f 
+            . . c 6 6 6 6 6 6 1 1 1 1 1 6 f 
+            . . . c 6 6 6 6 1 1 1 1 1 6 f . 
+            . . . . c c c c c c c c f f . . 
+            `, false)
+    } else {
+        game.showLongText("Collect 55 coins to forge Immunity!", DialogLayout.Top)
+        info.changeLifeBy(-1)
+        music.wawawawaa.play()
+    }
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     if (level == 1) {
         info.changeLifeBy(-1)
@@ -1835,7 +1770,7 @@ scene.onHitTile(SpriteKind.Player, 2, function (sprite) {
 let coin: Sprite = null
 let SuperJump: Sprite = null
 let GoldKey: Sprite = null
-let enemy5: Sprite = null
+let tile_list: tiles.Tile[] = []
 let enemy4: Sprite = null
 let enemy3: Sprite = null
 let enemy2: Sprite = null
@@ -1843,8 +1778,6 @@ let enemy1: Sprite = null
 let man_walk_right: animation.Animation = null
 let man_walk_left: animation.Animation = null
 let projectile2: Sprite = null
-let snake: Sprite = null
-let tile_list: tiles.Tile[] = []
 let man_stand_left: animation.Animation = null
 let man_stand_right: animation.Animation = null
 let Man: Sprite = null
