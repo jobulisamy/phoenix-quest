@@ -1792,7 +1792,7 @@ let man_stand_right: animation.Animation = null
 let Man: Sprite = null
 let keysTrue = 0
 let level = 0
-game.splash("It has been 30 years since the evil jewel collector NOT-Palpatine’s death.")
+game.splash("It has been 30 years since the evil jewel collector Insert N. Here's death.")
 game.showLongText(" On his last quest, he found the Phoenix Gem, a stone capable of giving \"gifts\" to anyone nearby.", DialogLayout.Full)
 game.showLongText(" He used those gifts to increase his fortune and power.", DialogLayout.Full)
 game.showLongText("The organization you are working for has chosen you, Khodi-One Lanobi, to find the Gem.", DialogLayout.Full)
