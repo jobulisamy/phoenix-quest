@@ -140,11 +140,17 @@ function man_stand_animation () {
     animation.attachAnimation(Man, man_stand_left)
     animation.attachAnimation(Man, man_stand_right)
 }
+function deleteMan () {
+    Man.destroy()
+}
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    game.splash("Go back a level")
-    level = level - 1
-    startLevel()
-    createMan()
+    if (level > 1) {
+        game.splash("Go back a level")
+        level = level - 1
+        startLevel()
+        deleteMan()
+        createMan()
+    }
 })
 scene.onHitTile(SpriteKind.Player, 11, function (sprite) {
     if (keysTrue == 3 && level == 4) {
@@ -194,6 +200,7 @@ scene.onHitTile(SpriteKind.Player, 11, function (sprite) {
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (Man.isHittingTile(CollisionDirection.Bottom) || level == 4) {
         Man.vy = -140
+        music.jumpUp.play()
     }
 })
 function createMan () {
@@ -1452,6 +1459,7 @@ function create_map () {
             dddddddddddddddddddddddddddddddddddddddd
             `)
     } else {
+        game.splash("The energy field of the Gem has given you \"gifts\"! One is speed the other is...")
         scene.setTileMap(img`
             cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
             cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
@@ -1728,23 +1736,24 @@ scene.onHitTile(SpriteKind.Player, 6, function (sprite) {
         music.beamUp.play()
         game.showLongText("You have forged Immunity! The snakes can't harm you!", DialogLayout.Top)
         scene.setTile(6, img`
-            . . . . c c c c c c c . . . . . 
-            . . . c 6 7 7 7 7 7 6 c . . . . 
-            . . c 6 7 c 6 6 6 6 c 7 c . . . 
-            . . c 7 7 6 f 6 6 f 6 7 6 c . . 
-            . . c 7 7 7 7 7 7 7 7 7 7 c . . 
-            . . f 7 7 7 6 1 f f 1 8 7 f . . 
-            . . f 7 7 7 f 1 f f 1 f 6 f . . 
-            . . f 6 7 7 f 2 2 2 2 f f . . . 
-            . . c f 6 7 7 2 2 2 2 f c c . . 
-            . c 7 7 c c 7 7 7 7 7 7 7 7 c . 
-            c 7 7 7 6 c f 7 7 7 7 1 1 1 7 c 
-            c c 6 6 6 c c f 6 7 1 1 1 1 1 f 
-            . . c 6 6 6 c 6 6 1 1 1 1 1 1 f 
-            . . c 6 6 6 6 6 6 1 1 1 1 1 6 f 
-            . . . c 6 6 6 6 1 1 1 1 1 6 f . 
-            . . . . c c c c c c c c f f . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
             `, false)
+        music.powerUp.play()
     } else {
         game.showLongText("Collect 55 coins to forge Immunity!", DialogLayout.Top)
         info.changeLifeBy(-1)
@@ -1783,6 +1792,13 @@ let man_stand_right: animation.Animation = null
 let Man: Sprite = null
 let keysTrue = 0
 let level = 0
+game.splash("It has been 30 years since the evil jewel collector NOT-Palpatine’s death.")
+game.showLongText(" On his last quest, he found the Phoenix Gem, a stone capable of giving \"gifts\" to anyone nearby.", DialogLayout.Full)
+game.showLongText(" He used those gifts to increase his fortune and power.", DialogLayout.Full)
+game.showLongText("The organization you are working for has chosen you, Khodi-One Lanobi, to find the Gem.", DialogLayout.Full)
+game.showLongText("But beware the creatures that guard the gem.", DialogLayout.Full)
+game.splash("Instructions:")
+game.showLongText("AD to move, Space to jump. Collect the coins and keys. Ghosts will kill you. Lava will kill you. Arrows will thieve you. “B” button to go back a level.", DialogLayout.Full)
 level = 1
 startLevel()
 createMan()
