@@ -174,7 +174,7 @@ scene.onHitTile(SpriteKind.Player, 11, function (sprite) {
             a c c c c c c c c c c c c c c a 
             `, false)
     } else {
-        game.showLongText("You have do not have the keys! You may not enter!", DialogLayout.Top)
+        game.showLongText("You need 3 keys! You may not enter!", DialogLayout.Top)
         scene.setTile(11, img`
             c b b b b b b b b b b b b b b c 
             c b b b b b b b b b b b b b b c 
@@ -707,7 +707,6 @@ function startLevel () {
         create_coin()
         Super_jump()
         create_Key1()
-        pause(2000)
         createEnemy()
     }
 }
@@ -1551,7 +1550,7 @@ function create_map () {
             ffffffffffffffffffffffffffffff.ffffffffffffffffffffff66666666666666666666666ffffffffffff.ffffffffffffffffffffffffffffffffffffffffffffffffffffff.ffffffffffffffff
             fffffffffffffffffffffffffffff..ffffffffffffffffffffff.....66...6..66...6.666ffffffffffff.fffffffffffffffffffffffffffffffffffffff...ffffffffffff.ffffffffffffffff
             ffffffffffffffffffffffffffff..fffffffffffffffffffffff..................6..6.ffffffffffff.ffffffffffffff......fffffffffffff.......f5ffffffffffff..fffffffffffffff
-            ffffffffffffffffffffffffffff................6...................ee.....6....ffffffffffff.fffffffffffffff.fff..........ffff.fffffff.fffffffffffff.fffffffffffffff
+            ffffffffffffffffffffffffffff................6......b............ee.....6....ffffffffffff.fffffffffffffff.fff..........ffff.fffffff.fffffffffffff.fffffffffffffff
             ffffffffffffffffffffffffffff..f....fffffffffffffffff........eee..7e....6....ffffffffffff8fffffffffffffff8ffffffffffff.ffff5fffffff8fffffffffffff5fffffffffffffff
             ffffffffffffffffffffffffffffffffffffffffffffffffffff...................6.cafffffffffffff.fffffffffffffff..fffffffffff.ffff.fffffff.fffffffffffff.fffffffffffffff
             ffffffffffffffffffffffffffffffffffffffffffffffffffffeeeeeeeee..eeeeeeeeeeeefffffffffffff.ffffffffffffffff......5...ff.ffff.fffffff......5........fffffffffffffff
